@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Http\Requests\MovieRequest;
 
 class MoviesController extends Controller
 {
@@ -14,6 +15,18 @@ class MoviesController extends Controller
      */
     public function index()
     {
+        $query = Movie::query();
+        if($request->title) {
+            $query->where('title', $request->title);
+        }
+       if ($request->take) {
+           $query->take($request->take);
+       }
+       if ($request->skip) {
+            $query->skip($request->skip);
+        }
+        return $query->get();
+
         $movies = Movie::all();
         return response()->json($movies);
     }
@@ -25,10 +38,11 @@ class MoviesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MovieRequest $request)
     {
-        $data = $request->all();
-        $newMovie = Movie::create();
+        $data = $request->validated();  
+        
+        $newMovie = Movie::create($data);
         return response()->json($newMovie);
     }
 
@@ -62,9 +76,11 @@ class MoviesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MovieRequest $request, $id)
     {
-        $data = $request->all();
+
+        $data = $request->validated();
+  
         $movie = Movie::findOrFail($id);
         $movie->update($data);
         return response()->json($movie);
