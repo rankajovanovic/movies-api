@@ -13,7 +13,7 @@ class UniqueWithReleaseDate implements Rule
      */
     public function __construct()
     {
-        //
+        $this->releaseDate = $releaseDate;
     }
 
     /**
@@ -25,7 +25,7 @@ class UniqueWithReleaseDate implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        
     }
 
     /**

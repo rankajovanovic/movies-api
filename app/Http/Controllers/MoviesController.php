@@ -15,19 +15,20 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $query = Movie::query();
-        if($request->title) {
-            $query->where('title', $request->title);
-        }
-       if ($request->take) {
-           $query->take($request->take);
-       }
-       if ($request->skip) {
-            $query->skip($request->skip);
-        }
-        return $query->get();
+    //     $query = Movie::query();
+    //     if($request->title) {
+    //         $query->where('title', $request->title);
+    //     }
+    //    if ($request->take) {
+    //        $query->take($request->take);
+    //    }
+    //    if ($request->skip) {
+    //         $query->skip($request->skip);
+    //     }
+    //     return $query->get();
 
-        $movies = Movie::all();
+        $movies = Movie::all()->get();
+        console.log($movies);
         return response()->json($movies);
     }
 
@@ -40,8 +41,8 @@ class MoviesController extends Controller
      */
     public function store(MovieRequest $request)
     {
-        $data = $request->validated();  
-        
+        $data = $request->validated();
+
         $newMovie = Movie::create($data);
         return response()->json($newMovie);
     }
@@ -80,7 +81,7 @@ class MoviesController extends Controller
     {
 
         $data = $request->validated();
-  
+
         $movie = Movie::findOrFail($id);
         $movie->update($data);
         return response()->json($movie);

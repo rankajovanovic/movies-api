@@ -16,6 +16,9 @@ class CheckTitleAndReleaseDate
      */
     public function handle(Request $request, Closure $next)
     {
+        if (Movie::where('title' )
+        ->where('releaseDate' )
+        ->exist())
         return $next($request);
     }
 }
